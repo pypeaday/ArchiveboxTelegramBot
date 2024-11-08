@@ -7,7 +7,7 @@ import re
 import os
 
 archivebox_url = os.environ["ARCHIVEBOX_URL"]
-chatids = os.environ["CHATIDS"].split(",")
+chatids = [int(x) for x in os.environ["CHATIDS"].split(",")]
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 csrfmiddlewaretoken = os.environ["CSRFMIDDLEWARETOKEN"]
 
