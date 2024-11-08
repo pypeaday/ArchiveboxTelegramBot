@@ -12,6 +12,7 @@ BOT_TOKEN = os.environ["BOT_TOKEN"]
 csrfmiddlewaretoken = os.environ["CSRFMIDDLEWARETOKEN"]
 
 def help_command(update: Update, context: CallbackContext) -> None:
+    """Send a message when the command /help is issued."""
     update.message.reply_text('This bot archives all urls in a chat')
 
 def parseCookieFile(cookiefile):
