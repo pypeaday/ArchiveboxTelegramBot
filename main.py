@@ -49,7 +49,7 @@ def check_for_urls(update: Update, context: CallbackContext) -> None:
                         add_url(url.group())
                         update.message.reply_text(f"Added {url.group()} to the archive!")
                     except requests.exceptions.Timeout:
-                        update.message.reply_text(f"Timedout adding {url.group()} to the archive...")
+                        update.message.reply_text(f"Timout adding {url.group()} to the archive but it might be there")
                         pass
                     except:
                         update.message.reply_text("Error adding url to archive")
