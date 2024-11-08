@@ -29,7 +29,7 @@ def parseCookieFile(cookiefile):
     return cookies
 
 def add_url(url_to_download):
-    cookies = parseCookieFile('cookies.txt')
+    cookies = parseCookieFile('/data/cookies.txt')
     data = {"csrfmiddlewaretoken":csrfmiddlewaretoken,"url": url_to_download, "parser": "auto", "tag":"Telegram", "depth":"0"}
 
     r = requests.post(f"{archivebox_url}/add/", data=data, cookies=cookies, timeout=1)
@@ -91,7 +91,7 @@ def get_archive(update: Update, context: CallbackContext):
     if update.effective_chat.id in chatids:
         #Get all archives matching context.args[1]
         if context.args[0] == "all":
-            conn = sqlite3.connect('index.sqlite3', uri=True)
+            conn = sqlite3.connect('/data/index.sqlite3', uri=True)
             c = conn.cursor()
             c.execute(f"SELECT url,id FROM core_snapshot WHERE url LIKE '%{context.args[1]}%'")
             conn.commit()

@@ -1,3 +1,9 @@
+# ArchiveboxTelegramBot-Docker
+
+OG instructions below but I changed a couple things
+
+1. the script assumes that the database and cookies are in `/data` - so in docker `main.py` is in `/app` and then you should volume mount in the directory with the cookies and db to `/data` inside the container running the bot
+
 # ArchiveboxTelegramBot
 A simple Telegram bot to send urls from a Telegram chat to Archivebox.  
 
