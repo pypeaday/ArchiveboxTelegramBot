@@ -1,6 +1,8 @@
-from telegram import Update, ForceReply
+from telegram import Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
-import requests, sqlite3, time
+import requests
+import sqlite3
+import time
 import re
 import os
 
@@ -20,7 +22,10 @@ def parseCookieFile(cookiefile):
         for line in fp:
             if not re.match(r'^\#', line):
                 lineFields = line.strip().split('\t')
-                cookies[lineFields[5]] = lineFields[6]
+                try:
+                    cookies[lineFields[5]] = lineFields[6]
+                except IndexError:
+                    pass
     return cookies
 
 def add_url(url_to_download):
@@ -42,16 +47,16 @@ def check_for_urls(update: Update, context: CallbackContext) -> None:
                     print(url.group())
                     try:
                         add_url(url.group())
-                        #update.message.reply_text(f"Added {url.group()} to the archive!")
-                    except requests.exceptions.Timeout as e:
-                        #update.message.reply_text(f"Added {url.group()} to the archive!")
+                        update.message.reply_text(f"Added {url.group()} to the archive!")
+                    except requests.exceptions.Timeout:
+                        update.message.reply_text(f"Timedout adding {url.group()} to the archive...")
                         pass
                     except:
-                        update.message.reply_text(f"Error adding url to archive")
+                        update.message.reply_text("Error adding url to archive")
             else:
                 print(f"{update.effective_chat.id} tried to add {update.effective_message.text}")
                 try:
-                    update.message.reply_text(f"This is a private bot. Please do not use this!")
+                    update.message.reply_text("This is a private bot. Please do not use this!")
                 except AttributeError:
                     #probably someone edited a message. Ignoring it and do not send msg again
                     pass
@@ -107,7 +112,7 @@ def get_archive(update: Update, context: CallbackContext):
             if len(archived_snapshots) > 0:
                 msg = '\n'.join(archived_snapshots)
             else:
-                msg = f"URL not in archive :("
+                msg = "URL not in archive :("
             send_message(context.bot, update.effective_chat.id, msg)
         else:
             conn = sqlite3.connect('index.sqlite3', uri=True)
@@ -131,10 +136,10 @@ def get_archive(update: Update, context: CallbackContext):
             if len(archived_snapshots) >0:
                 msg = '\n'.join(archived_snapshots)
             else:
-                msg = f"URL not in archive :("
+                msg = "URL not in archive :("
             context.bot.send_message(chat_id=update.message.chat_id, text=msg)
     else:
-        update.message.reply_text(f"This is a private bot. Please do not use this!")
+        update.message.reply_text("This is a private bot. Please do not use this!")
 
 def main() -> None:
     """Start the bot."""
