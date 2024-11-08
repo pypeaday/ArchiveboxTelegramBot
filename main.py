@@ -2,11 +2,12 @@ from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 import requests, sqlite3, time
 import re
+import os
 
-archivebox_url="" #e.g. http://192.168.1.10:9090
-chatids = [CHAT_ID_HERE]
-BOT_TOKEN = "BOTTOKEN_HERE"
-csrfmiddlewaretoken = ""
+archivebox_url = os.environ["ARCHIVEBOX_URL"]
+chatids = os.environ["CHATIDS"].split(",")
+BOT_TOKEN = os.environ["BOT_TOKEN"]
+csrfmiddlewaretoken = os.environ["CSRFMIDDLEWARETOKEN"]
 
 def help_command(update: Update, context: CallbackContext) -> None:
     update.message.reply_text('This bot archives all urls in a chat')
